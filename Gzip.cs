@@ -7,6 +7,7 @@ public static class MemoryWriteReadExample
 {
     private const string Message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
     private static readonly byte[] s_messageBytes = Encoding.ASCII.GetBytes(Message);
+    private static readonly byte[] s_messageBytes2 = Encoding.ASCII.GetBytes(Message);
 
     public static void Main()
     {
@@ -27,14 +28,14 @@ public static class MemoryWriteReadExample
     private static void CompressBytesToStream(Stream stream)
     {
         using var compressor = new GZipStream(stream, CompressionMode.Compress, true);
-        compressor.Write(s_messageBytes, 0, s_messageBytes.Length-45);
-        compressor.Write(s_messageBytes, 400, 45);
+        compressor.Write(s_messageBytes, 0, s_messageBytes.Length);
+        compressor.Write(s_messageBytes, 0, s_messageBytes2.Length);
     }
 
     private static int DecompressStreamToBytes(Stream stream)
     {
         stream.Position = 0;
-        int bufferSize = 512;
+        int bufferSize = 1024;
         byte[] decompressedBytes = new byte[bufferSize];
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         int length = decompressor.Read(decompressedBytes, 0, bufferSize);
