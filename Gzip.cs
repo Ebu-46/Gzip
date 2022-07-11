@@ -29,7 +29,7 @@ public static class MemoryWriteReadExample
     {
         using var compressor = new GZipStream(stream, CompressionMode.Compress, true);
         compressor.Write(s_messageBytes, 0, s_messageBytes.Length);
-        compressor.Write(s_messageBytes, 0, s_messageBytes2.Length);
+        compressor.Write(s_messageBytes2, 0, s_messageBytes2.Length);
     }
 
     private static int DecompressStreamToBytes(Stream stream)
